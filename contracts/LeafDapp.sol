@@ -2,116 +2,269 @@
 pragma solidity 0.8.10;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./LEAF.sol";
+import "./LeafToken.sol";
+import "./LeafNft.sol";
 
 contract LeafDapp is Ownable {
 
-  uint constant MIN_PRICE = 50000000000000;
+  /// @dev value to go to the next level
+  uint constant NEW_LEVEL_VALUE = 10000;
+  uint constant OWNER_LEAFS = 1000000*(10 ** 18);
+  uint constant MIN_NB_STEPS = 1000;
+  uint constant MAX_LEVEL = 3;
 
-  LEAF public leaf;
+  /// @dev the NFT price
+  uint cost = 0.01 ether;
+  /// @dev max supply for 1st level NFTs
+  uint maxSupplyNft = 10000;
+  /// @dev max supply for token LEAF
+  uint maxSupplyLeaf = 150000000 * (10**18);
+  /// @dev to pause the dapp
+  bool paused = false;
+  /// @dev if can do test without time restriction
+  bool test = true;
+  /// @dev the token ERC20 LEAF
+  LeafToken leaf;
+  /// @dev the token ERC721 LNFT
+  LeafNft nft;
 
+  /// @param oldNbStep yesterday's step count
+  /// @param nbDaySuccess number of days success (+10000 steps)
+  /// @param level level of player 0, 1, 2 or 3
+  /// @param totalNbStep total number of steps 
+  /// @param lastUpdateDate last update when player had more than 10000 steps
+  /// @param uriIpfs list of ipfs URIs
   struct Player {
     uint32 oldNbStep;
     uint32 nbDaySuccess;
-    uint lastSync;
-    address addressNFT;
+    uint32 level;
+    uint totalNbStep;
+    uint lastUpdateDate;
+    string[] uriIpfs;
   }
 
-  mapping (address => Player) public players;
+  /// @dev return player from his address
+  mapping (address => Player) players;
+  /// @dev returns player validity from his address
+  mapping(address => bool) whitelisted;
 
-  event LeafBuyed(address _address, uint amountLeaf);
-  event LeafWins(address _address, uint amountLeaf);
+  /// @dev when new NFT was buyed
+  event NftBuyed(address _address, string uriIpfs);
+  /// @dev when LEAF was transfered
+  event LeafTransfer(address _address, uint amountLeaf);
 
-  constructor(uint _totalSupply) {
-    leaf = new LEAF(_totalSupply);
-    leaf.mint();
+  /// @param _leaf the ERC20 LEAF token contract address
+  /// @param _nft the ERC721 LNFT token contract address
+  constructor(address _leaf, address _nft) {
+    leaf = LeafToken(_leaf);
+    nft = LeafNft(_nft);
   }
 
-  /// @notice can buy at least 1 Leaf
-  function buyLeaf() payable external {
+  modifier onlyPlayer() {
+    require (isPlayer(msg.sender), "LeafDapp : caller is not a player");
+    _;
+  }
+
+  modifier onlyOwnerOrPlayer() {
+    require (owner() == msg.sender ||
+      isPlayer(msg.sender), "LeafDapp : caller is not a player");
+    _;
+  }
+
+  /// @dev mint million LEAF for owner
+  function mintLeaf() external onlyOwner {
+    leaf.mint(maxSupplyLeaf);
+    leaf.transfer(msg.sender, OWNER_LEAFS);
+  }
+
+  /// @dev to play you have to buy the first NFT
+  function buyNft() payable external {
+    require(! isPlayer(msg.sender), "LeafDapp : this address already has an nft");
+    require(! whitelisted[msg.sender], "LeafDapp : this address already has an nft");
+    require(!paused, "LeafDapp : is paused");
     uint amountTobuy = msg.value;
-    uint amountLeaf = weiToLeaf(amountTobuy);
-    uint dappBalance = balanceDappLeaf();
-    require(amountTobuy >= MIN_PRICE, "LeafDApp : must be greater than 0.00005 ETH");
-    require(amountLeaf <= dappBalance, "LeafDApp : not enough leafs in the reserve");
+    uint supply = nftSupply();
+    require(amountTobuy == cost, "LeafDApp : must be aqual to 0.01ETH");
+    require(supply < maxSupplyNft, "LeafDApp : the LNFT reserve is empty");
 
-    leaf.transfer(msg.sender, amountLeaf);
+    string memory newNft = nft.firstMint(msg.sender);
+    players[msg.sender].uriIpfs.push(newNft);
+    whitelisted[msg.sender] = true;
 
-    emit LeafBuyed(msg.sender, amountLeaf);
+    emit NftBuyed(msg.sender, newNft);
   }
 
-  /// @dev 10000 Step = 10Leaf (10*100) 
-  /// @dev 13875 Step = 13.87 Leaf (1387) 
-  function stepToLeaf(uint32 _nbStep) external {
-    require(block.timestamp - players[msg.sender].lastSync >= 1 days,
-      "LeafDApp : a day has not passed yet");
-    
-    players[msg.sender].lastSync = block.timestamp;
 
+
+  /// @dev update player data related to the number of steps
+  /// @param _nbStep number of steps per day
+  function stepToLeaf(uint32 _nbStep) external onlyPlayer {
+    require(block.timestamp - players[msg.sender].lastUpdateDate >= 1 days,
+      "LeafDApp : a day has not passed yet");
+    require(!paused, "LeafDapp : is paused");
+    
     uint amountLeaf = _nbStep / 10;
-    if(_nbStep >= 10000) {
-      leaf.transfer(msg.sender, amountLeaf);
+
+    if(_nbStep >= MIN_NB_STEPS) {
+      players[msg.sender].lastUpdateDate = block.timestamp;
       players[msg.sender].nbDaySuccess++;
       players[msg.sender].oldNbStep = _nbStep;
+      players[msg.sender].totalNbStep += _nbStep;
+      if(players[msg.sender].level < MAX_LEVEL) {
+        setNewLevel(msg.sender);
+      } else {
+        leaf.transfer(msg.sender, amountLeaf);
+      }
     } else {
       players[msg.sender].nbDaySuccess = 0;
     }
 
-    emit LeafWins(msg.sender, amountLeaf);
+    emit LeafTransfer(msg.sender, amountLeaf);
   }
 
-  function stepToLeafByAddress(address _address, uint32 _nbStep) external {
-    require(block.timestamp - players[msg.sender].lastSync >= 1 days,
-      "LeafDApp : a day has not passed yet");
+  function stepToLeafWithoutTimestamp(uint32 _nbStep) external onlyPlayer {
+    require(test);
+    // require(block.timestamp - players[msg.sender].lastUpdateDate >= 1 days,
+    //   "LeafDApp : a day has not passed yet");
+    require(!paused, "LeafDapp : is paused");
+    require(isPlayer(msg.sender), "LeafDApp : not a player");
     
-    players[_address].lastSync = block.timestamp;
+    uint amountLeaf = _nbStep / 10;
 
-    if(_nbStep >= 10000) {
-      leaf.transfer(_address, _nbStep / 10);
-      players[_address].nbDaySuccess++;
-      players[_address].oldNbStep = _nbStep;
+    if(_nbStep >= MIN_NB_STEPS) {
+      players[msg.sender].lastUpdateDate = block.timestamp;
+      players[msg.sender].nbDaySuccess++;
+      players[msg.sender].oldNbStep = _nbStep;
+      players[msg.sender].totalNbStep += _nbStep;
+      if(players[msg.sender].level < MAX_LEVEL) {
+        setNewLevel(msg.sender);
+      } else {
+        leaf.transfer(msg.sender, amountLeaf);
+      }
     } else {
-      players[_address].nbDaySuccess = 0;
+      players[msg.sender].nbDaySuccess = 0;
     }
+
+    emit LeafTransfer(msg.sender, amountLeaf);
   }
 
+
   //////////////////////////////////////////////////////////////////////////
-  //   OWNER FUNCTIONS
+  //   INTERNAL FUNCTIONS
   //////////////////////////////////////////////////////////////////////////
+
+  /// @dev the player levels up and receives a new NFT
+  /// @param _player address of player
+  function setNewLevel(address _player) internal {
+    require(isPlayer(_player));
+
+    players[_player].level++;
+    uint newLevel = players[_player].level * NEW_LEVEL_VALUE;
+    string memory newNft = nft.nextMint(_player, newLevel);
+    players[_player].uriIpfs.push(newNft);
+  }
+
+  /// @return supply for one level
+  function nftSupply() internal view returns(uint) {
+    return nft.getSupply();
+  }
+
+  /// @dev show if player or not
+  function isPlayer(address _player) internal view returns(bool) {
+    require(_player != address(0), "LeafDapp : must not be equal to address 0");
+    return whitelisted[_player];
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  //   EXTERNAL FUNCTIONS
+  //////////////////////////////////////////////////////////////////////////
+
+
+  /// @dev withdraw for only owner
+  /// @param _amount the desired amount
   function withdraw(uint _amount) external onlyOwner {
-    payable(owner()).transfer(_amount);
+    payable(msg.sender).transfer(_amount);
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  //   UTILE FUNCTIONS
-  //////////////////////////////////////////////////////////////////////////
-
-  /**
-   * @dev 1 LEAF = 50000000000000 Wei OR 1 LEAF = 0,00005 ETH
-   * @notice 1 Leaf is stocked 100 (ex 1.75 Leaf => 175)
-   */
-  function weiToLeaf(uint _amountWei) internal pure returns(uint) {
-    uint leafToWei = 50000000000000;
-    uint precision = 100;
-
-    return _amountWei * precision / leafToWei;
+  /// @return player 
+  function getPlayer() external view onlyOwnerOrPlayer returns(Player memory){
+    return players[msg.sender];
   }
 
+  /// @dev set pause/start the dapp
+  function setPause(bool _state) external onlyOwner {
+    paused = _state;
+  }
 
-  //////////////////////////////////////////////////////////////////////////
-  //   BALANCES
-  //////////////////////////////////////////////////////////////////////////
+  /// @dev get pause/start the dapp
+  function getPause() external view onlyOwner returns(bool) {
+    return paused;
+  }
 
-  function balance() external view returns(uint) {
+  /// @dev set on/off test mode 
+  function setTest(bool _state) external onlyOwner {
+    test = _state;
+  }
+
+  /// @dev get on/off test mode 
+  function getTest() external view onlyOwner returns(bool) {
+    return test;
+  }
+
+  /// @dev change the cost
+  function setCost(uint _newCost) external onlyOwner {
+    cost = _newCost;
+  }
+
+  /// @dev add to whitelist
+  /// @param _player the address of player
+  function whitelistPlayer(address _player) external onlyOwner {
+    require(_player != address(0), "LeafDapp : must not be equal to address 0");
+    whitelisted[_player] = true;
+  }
+
+  /// @dev remove frome whitelist
+  /// @param _player the address of player
+  function removeWhitelistPlayer(address _player) external onlyOwner {
+    require(_player != address(0), "LeafDapp : must not be equal to address 0");
+    whitelisted[_player] = false;
+  }
+
+  /// @return balance of _player in LEAF
+  /// @param _player address of player
+  function balancePlayer(address _player) external view onlyOwner returns(uint) {
+    return leaf.balanceOf(_player);
+  }
+
+  /// @return balance of appellant in LEAF
+  function balance() external view onlyPlayer returns(uint) {
     return leaf.balanceOf(address(msg.sender));
   }
 
-  function balanceDappLeaf() public view returns(uint) {
+  /// @return supply of NFTs
+  function balanceNft() external view onlyOwnerOrPlayer returns (uint) {
+    return nftSupply();
+  }
+
+  /// @return contract balance in LEAF
+  function balanceDappLeaf() external view onlyOwnerOrPlayer returns(uint) {
     return leaf.balanceOf(address(this));
   }
 
-  function balanceDappEth() external view returns(uint) {
+  /// @return contract balance in ETH
+  function balanceDappEth() external view onlyOwner returns(uint) {
     return address(this).balance;
+  }
+
+  /// @return leaf
+  function getLeaf() external view onlyOwner returns(LeafToken) {
+    return leaf;
+  }
+
+  /// @return nft
+  function getNft() external view onlyOwner returns(LeafNft) {
+    return nft;
   }
 
 }
