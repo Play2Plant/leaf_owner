@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import LeafContract from "./contracts/LeafDapp.json";
 import getWeb3 from "./getWeb3";
-import { FormCheck } from "react-bootstrap";
+import { Button, Col, Container, Card, FormCheck, Row } from "react-bootstrap";
 
 import "./App.css";
 
