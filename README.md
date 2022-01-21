@@ -1,6 +1,6 @@
 # La dApp de Leaf avec l'interface Owner
 
-## Installation/exécution de dApp
+## Installation/exécution de la dApp
 - sur le dossier parent
   - `npm install`
   - `truffle migrate --reset --network NomReseau`
