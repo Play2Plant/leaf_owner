@@ -33,6 +33,8 @@
   - `npm run start`
   
 ## Tester la dApp
-- REMARQUE : a cause des conflits de node_modules j'ai enlevé `@openzeppelin/test-helpers` donc il faut installer
+REMARQUE : a cause des conflits de node_modules `@openzeppelin/test-helpers` a éte enlevé. Donc il faut installer pour pouvoir tester la dapp
   `npm install @openzeppelin/test-helpers --save`
-- `truffle test`
+  
+- `truffle test` pour faire les testes 
+- `truffle run coverage` pour faire les testes et voir la pourcentage de couverture des tests 
