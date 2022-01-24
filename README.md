@@ -10,8 +10,8 @@
   - il peut recuperer les donner consernant lui(dernier nombre pas, total nombres pas, url ses NFTs, son balance) 
   - il peut recuperer les donner globale comme supply de LNFTs et LEAFs 
  
- - Fonctionalites de owner
-    - recuperel les donnes de joueurs
+- Fonctionalites de owner
+  - recuperel les donnes de joueurs
   - mettre le dapp en pause
   - passer le dapp en mode test
   - changer le prix de LNFT
