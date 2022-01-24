@@ -24,7 +24,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+#root nav{
+  background: #FFF;
+  height: 30px;
+}
 .App-link {
   color: #61dafb;
 }
@@ -68,6 +71,9 @@
     opacity: 68%;
     font-weight: bold;
     text-align: center;
+}
+.roadmap ul li{
+    list-style-type: none;
 }
 /* MarketPlace */
 .marketPlaceTree{

@@ -4,10 +4,13 @@
   "private": true,
   "homepage": "https://play2plant.github.io/p2p-dApp/",
   "dependencies": {
+    "axios": "^0.25.0",
     "react": "16.11.0",
     "react-bootstrap": "^1.6.4",
     "react-dom": "16.11.0",
+    "react-router-dom": "^6.2.1",
     "react-scripts": "3.2.0",
+    "styled-components": "^5.3.3",
     "web3": "1.2.2"
   },
   "scripts": {

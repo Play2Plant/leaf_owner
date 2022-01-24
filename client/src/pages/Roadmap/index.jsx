@@ -1,9 +1,50 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 
-const Roadmap = () => {
-    return (
-        <div className="roadmap">
-            <h1>ROADMAP</h1>
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import colors from '../../utils/style/colors'
+import { Loader } from '../../utils/style/Atoms'
+import { useFetch, useTheme } from '../../utils/hooks'
+import tree from '../../assets/img/tree.png'
+
+const CardsContainer = styled.div`
+  display: grid;
+  gap: 24px;
+  grid-template-rows: 350px 350px;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center;
+`
+
+const PageTitle = styled.h1`
+  font-size: 30px;
+  text-align: center;
+  padding-bottom: 30px;
+  color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
+`
+
+const PageSubtitle = styled.h2`
+  font-size: 20px;
+  color: ${colors.secondary};
+  font-weight: 300;
+  text-align: center;
+  padding-bottom: 30px;
+  color: ${({ theme }) => (theme === 'light' ? '#000000' : '#ffffff')};
+`
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+function Roadmap() {
+  const { theme } = useTheme()
+
+  return (
+    <div className="roadmap">
+      <PageTitle theme={theme}>ROADMAP</PageTitle>
+      <PageSubtitle theme={theme}>
             <hr></hr>
             <h2>Décembre 2021 - Janvier 2022</h2>
             <h2>POC</h2>
@@ -48,8 +89,9 @@ const Roadmap = () => {
                 <li>Tests/développements</li><i>Q1 2023</i>
                 <li>Lancement du jeu</li><i>21 mars 2023</i>
             </ul>
-        </div>
-    )
+      </PageSubtitle>
+    </div>
+  )
 }
 
 export default Roadmap

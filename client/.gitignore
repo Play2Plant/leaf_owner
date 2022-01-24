@@ -1,7 +1,4 @@
 .env
 node_modules
 client.node_modules
-coverage
-coverage.json
 .DS_Store
-
