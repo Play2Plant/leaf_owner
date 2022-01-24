@@ -11,7 +11,7 @@
   - il peut recuperer les donner globale comme supply de LNFTs et LEAFs 
  
  - Fonctionalites de owner
-  - recuperel les donnes de joueurs
+    - recuperel les donnes de joueurs
   - mettre le dapp en pause
   - passer le dapp en mode test
   - changer le prix de LNFT
