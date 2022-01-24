@@ -1,5 +1,23 @@
 # La dApp de Leaf avec l'interface Owner
 
+## Description de la dapp
+- Le deroulement d'un joueur d'un player
+  - achete un LNFT Grain pour devenir joueur avec level_0
+  - fais 10000 pas et devien level 1 et recoie deuzieme LNFT Jeune Pousse
+  - fais 20000 pas et devien level 2 et recoie troisiemme LNFT Arbre
+  - fais 30000 pas et devien level 3 et recoie quatriemme LNFT Arbre Producteur
+  - apres 30000 pas chaque 10000 pas va etre remunerer 10 LEAFs
+  - il peut recuperer les donner consernant lui(dernier nombre pas, total nombres pas, url ses NFTs, son balance) 
+  - il peut recuperer les donner globale comme supply de LNFTs et LEAFs 
+ 
+ - Fonctionalites de owner
+  - recuperel les donnes de joueurs
+  - mettre le dapp en pause
+  - passer le dapp en mode test
+  - changer le prix de LNFT
+  - mettre un joueur dans la liste noir
+  - voir les donner global comme supply de LNFTs et LEAFs.
+  - voir/recuperer les ETH qui sont present dans dapp
 
 ## La documentations génerer sur ipfs.io pour chaque contracts
 - [LeafToken_README.md](https://ipfs.io/ipfs/QmQrJhTsEgLgkqSL3nhSLFqceXJczfZzSfTy3NMsWhQdEn)
