@@ -33,9 +33,10 @@ function About() {
   const { theme } = useTheme()
 
   return (
-    <div className="about">
+    <div>
       <PageTitle theme={theme}>About</PageTitle>
       <PageSubtitle theme={theme}>  
+        <div className="about">
           <div className="whiteBox">
             <h1>MOVE-TO-EARN</h1>
             <p>
@@ -74,6 +75,7 @@ function About() {
               Votre arbre va produire un fruit qui donnera naissance à un nouvel arbre.
             </p>
           </div>
+        </div>
       </PageSubtitle>
     </div>
   )
