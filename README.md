@@ -38,3 +38,6 @@ REMARQUE : a cause des conflits de node_modules `@openzeppelin/test-helpers` a √
   
 - `truffle test` pour faire les testes 
 - `truffle run coverage` pour faire les testes et voir la pourcentage de couverture des tests 
+
+## Documentations 
+Vous pouvez trouver tout les documents demand√© dans la dossier [documents](https://github.com/Play2Plant/leaf_owner/tree/main/documents)
