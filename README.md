@@ -1,8 +1,11 @@
 # La dApp de Leaf avec l'interface Owner
 
-### La documentations sur les contracts
-- [LeafToken_README.md](https://ipfs.io/ipfs/QmSD4dtnruFxK5tsmekvpUE8nqwcXhZxZ3AeJGu8kbWAjY)
-- 
+
+### La documentations génerer pour chaque contracts :
+- [LeafToken_README.md](https://ipfs.io/ipfs/QmQrJhTsEgLgkqSL3nhSLFqceXJczfZzSfTy3NMsWhQdEn)
+- [LeafNft_README.md](https://ipfs.io/ipfs/QmdoCigjx7EiGb1wid6BHmaZk9iqwWq3qoR6PxwVEatH3W)
+- [LeafDapp_README.md](https://ipfs.io/ipfs/QmfYCzzauCN6iYpsvHAJ74WisGv6HWVZcTqz2WRyqUFYkK)
+
 ## Installation/exécution de la dApp
 - sur le dossier parent
   - `npm install`
