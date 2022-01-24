@@ -1,25 +1,25 @@
 # La dApp de Leaf avec l'interface Owner
 
 ## Description de la dapp
-- Le deroulement d'un joueur d'un player
-  - achete un LNFT Grain pour devenir joueur avec level_0
-  - fais 10000 pas et devien level 1 et recoie deuzieme LNFT Jeune Pousse
-  - fais 20000 pas et devien level 2 et recoie troisiemme LNFT Arbre
-  - fais 30000 pas et devien level 3 et recoie quatriemme LNFT Arbre Producteur
-  - apres 30000 pas chaque 10000 pas va etre remunerer 10 LEAFs
-  - il peut recuperer les donner consernant lui(dernier nombre pas, total nombres pas, url ses NFTs, son balance) 
-  - il peut recuperer les donner globale comme supply de LNFTs et LEAFs 
+- Le déroulement d'un joueur
+  - achète un LNFT Grain pour devenir joueur avec niveau 0
+  - fait 10000 pas et devient niveau 1 et reçoit deuxième LNFT Jeune Pousse
+  - fait 20000 pas et devient niveau 2 et reçoit troisième LNFT Arbre
+  - fais 30000 pas et devient niveau 3 et reçoit quatrième LNFT Arbre Producteur
+  - après les 30000 pas, chaque 10000 pas sera gratifié de 10 LEAFs
+  - il peut récupérer ses données (dernier nombre pas, total nombres pas, l'url de ses NFTs, sa balance etc.)
+  - il peut récupérer les données globales comme le supply de LNFTs et LEAFs
  
-- Fonctionalites de owner
-  - recuperel les donnes de joueurs
+- Fonctionnalités de l'owner
+  - récupérer les données des joueurs
   - mettre le dapp en pause
   - passer le dapp en mode test
   - changer le prix de LNFT
-  - mettre un joueur dans la liste noir
-  - voir les donner global comme supply de LNFTs et LEAFs.
-  - voir/recuperer les ETH qui sont present dans dapp
+  - mettre un joueur dans la liste noire
+  - voir les données globales comme supply de LNFTs et LEAFs
+  - voir/récupérer les ETH qui sont présents dans la dapp
 
-## La documentations génerer sur ipfs.io pour chaque contracts
+## La documentation est générée sur ipfs.io pour chaque contracts
 - [LeafToken_README.md](https://ipfs.io/ipfs/QmQrJhTsEgLgkqSL3nhSLFqceXJczfZzSfTy3NMsWhQdEn)
 - [LeafNft_README.md](https://ipfs.io/ipfs/QmdoCigjx7EiGb1wid6BHmaZk9iqwWq3qoR6PxwVEatH3W)
 - [LeafDapp_README.md](https://ipfs.io/ipfs/QmfYCzzauCN6iYpsvHAJ74WisGv6HWVZcTqz2WRyqUFYkK)
@@ -33,11 +33,11 @@
   - `npm run start`
   
 ## Tester la dApp
-REMARQUE : a cause des conflits de node_modules `@openzeppelin/test-helpers` a éte enlevé. Donc il faut installer pour pouvoir tester la dapp
+REMARQUES : à cause des conflits de node_modules @openzeppelin/test-helpers a été enlevé. Donc, pouvoir tester la dapp; il faut lancer :
   `npm install @openzeppelin/test-helpers --save`
   
-- `truffle test` pour faire les testes 
-- `truffle run coverage` pour faire les testes et voir la pourcentage de couverture des tests 
+- `truffle test` pour lancer les testes
+- `truffle run coverage` pour lancer les testes et voir le pourcentage de couverture des tests
 
 ## Documentations 
-Vous pouvez trouver tout les documents demandé dans la dossier [documents](https://github.com/Play2Plant/leaf_owner/tree/main/documents)
+Vous pouvez trouver tous les documents demandés dans le dossier [documents](https://github.com/Play2Plant/leaf_owner/tree/main/documents)
