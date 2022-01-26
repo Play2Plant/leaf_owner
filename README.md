@@ -22,11 +22,6 @@
 ## Lien vers Site Web
 https://play2plant.github.io/leaf_owner/
 
-## La documentation est générée sur ipfs.io pour chaque contracts
-- [LeafToken_README.md](https://ipfs.io/ipfs/QmQrJhTsEgLgkqSL3nhSLFqceXJczfZzSfTy3NMsWhQdEn)
-- [LeafNft_README.md](https://ipfs.io/ipfs/QmdoCigjx7EiGb1wid6BHmaZk9iqwWq3qoR6PxwVEatH3W)
-- [LeafDapp_README.md](https://ipfs.io/ipfs/QmfYCzzauCN6iYpsvHAJ74WisGv6HWVZcTqz2WRyqUFYkK)
-
 ## Installation/exécution de la dApp
 - sur le dossier parent
   - `npm install`
@@ -41,6 +36,11 @@ REMARQUES : à cause des conflits de node_modules @openzeppelin/test-helpers a �
   
 - `truffle test` pour lancer les testes
 - `truffle run coverage` pour lancer les testes et voir le pourcentage de couverture des tests
+
+## La documentation est générée sur ipfs.io pour chaque contracts
+- [LeafToken_README.md](https://ipfs.io/ipfs/QmQrJhTsEgLgkqSL3nhSLFqceXJczfZzSfTy3NMsWhQdEn)
+- [LeafNft_README.md](https://ipfs.io/ipfs/QmdoCigjx7EiGb1wid6BHmaZk9iqwWq3qoR6PxwVEatH3W)
+- [LeafDapp_README.md](https://ipfs.io/ipfs/QmfYCzzauCN6iYpsvHAJ74WisGv6HWVZcTqz2WRyqUFYkK)
 
 ## Documentations 
 Vous pouvez trouver tous les documents demandés dans le dossier [documents](https://github.com/Play2Plant/leaf_owner/tree/main/documents)
