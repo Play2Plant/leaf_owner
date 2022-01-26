@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/leaf_owner/static/css/main.b100e6da.chunk.css",
+    "main.js": "/leaf_owner/static/js/main.3db8e649.chunk.js",
+    "main.js.map": "/leaf_owner/static/js/main.3db8e649.chunk.js.map",
+    "runtime-main.js": "/leaf_owner/static/js/runtime-main.864d8069.js",
+    "runtime-main.js.map": "/leaf_owner/static/js/runtime-main.864d8069.js.map",
+    "static/js/2.6107c4d0.chunk.js": "/leaf_owner/static/js/2.6107c4d0.chunk.js",
+    "static/js/2.6107c4d0.chunk.js.map": "/leaf_owner/static/js/2.6107c4d0.chunk.js.map",
+    "index.html": "/leaf_owner/index.html",
+    "precache-manifest.fe9cb646ae3892eea2b9a2fa4b3b0f00.js": "/leaf_owner/precache-manifest.fe9cb646ae3892eea2b9a2fa4b3b0f00.js",
+    "service-worker.js": "/leaf_owner/service-worker.js",
+    "static/css/main.b100e6da.chunk.css.map": "/leaf_owner/static/css/main.b100e6da.chunk.css.map",
+    "static/media/Play_to_Plan_1.gif": "/leaf_owner/static/media/Play_to_Plan_1.6d95aa53.gif",
+    "static/media/forest-background-5-flou.jpeg": "/leaf_owner/static/media/forest-background-5-flou.2d3105fe.jpeg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.864d8069.js",
+    "static/js/2.6107c4d0.chunk.js",
+    "static/css/main.b100e6da.chunk.css",
+    "static/js/main.3db8e649.chunk.js"
+  ]
+}
